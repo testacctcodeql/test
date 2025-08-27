@@ -4,7 +4,7 @@ SRC_DIR := src
 BUILD_DIR := build
 
 # Toolchain
-CC := clang
+CC := gcc
 AR := ar
 ARFLAGS := rcs
 
