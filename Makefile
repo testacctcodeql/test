@@ -1,38 +1,30 @@
-# Project layout (adjust if needed)
-INC_DIR := include
-SRC_DIR := src
 BUILD_DIR := build
 
-# Toolchain
 CC := gcc
 AR := ar
 ARFLAGS := rcs
 
-# Flags
-CPPFLAGS := -I$(INC_DIR)
-CFLAGS   := -Wall -Wextra -O2 -g -fPIC
-LDFLAGS  := 
-LDLIBS   := 
+CFLAGS := -Wall -Wextra -O2 -g -fPIC
+LDFLAGS :=
+LDLIBS :=
 
-# Outputs
 LIB_STATIC := $(BUILD_DIR)/liba.a
 LIB_SHARED := $(BUILD_DIR)/liba.so
 
-# Sources / Objects
-SRCS := $(wildcard $(SRC_DIR)/*.c)
-OBJS := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
+# Source files are all .c files in current directory
+SRCS := $(wildcard *.c)
+
+# Object files in build/ with same base names
+OBJS := $(patsubst %.c, $(BUILD_DIR)/%.o, $(SRCS))
 
 .PHONY: all clean distclean print
 
 all: $(LIB_STATIC) $(LIB_SHARED)
 
-# Build dirs
-$(BUILD_DIR):
-	@mkdir -p $@
-
-# Compile object files
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+# Make sure build directory exists before compiling
+$(BUILD_DIR)/%.o: %.c
+	@mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Static library
 $(LIB_STATIC): $(OBJS)
@@ -47,7 +39,6 @@ print:
 	@echo "Objects: $(OBJS)"
 
 clean:
-	@$(RM) -r $(BUILD_DIR)/*.o
+	@rm -rf $(BUILD_DIR)
 
 distclean: clean
-	@$(RM) -r $(BUILD_DIR)
