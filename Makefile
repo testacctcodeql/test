@@ -28,27 +28,26 @@ all: $(LIB_STATIC) $(LIB_SHARED)
 
 # Build dirs
 $(BUILD_DIR):
- @mkdir -p $@
+	@mkdir -p $@
 
 # Compile object files
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
- $(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Static library
 $(LIB_STATIC): $(OBJS)
- $(AR) $(ARFLAGS) $@ $^
+	$(AR) $(ARFLAGS) $@ $^
 
 # Shared library
 $(LIB_SHARED): $(OBJS)
- $(CC) -shared $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	$(CC) -shared $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 print:
- @echo "Sources: $(SRCS)"
- @echo "Objects: $(OBJS)"
+	@echo "Sources: $(SRCS)"
+	@echo "Objects: $(OBJS)"
 
 clean:
- @$(RM) -r $(BUILD_DIR)/*.o
+	@$(RM) -r $(BUILD_DIR)/*.o
 
 distclean: clean
- @$(RM) -r $(BUILD_DIR)
- 
+	@$(RM) -r $(BUILD_DIR)
